@@ -1,67 +1,68 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
-//import 'package:jokes_flutter/generated/i18n.dart';
+import 'package:jokes_flutter/api/jokes/jokes.dart';
+import 'package:jokes_flutter/model/Joke.dart';
+import "package:pull_to_refresh/pull_to_refresh.dart";
 
-void main() => runApp(MyApp());
+void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-//      title: S.of(context).mainTitle,
-      title: 'Шуточки от Чака Норриса',
-      home: RandomWords(),
-      supportedLocales: [
-        const Locale('en', ''),
-        const Locale('ru', ''),
-      ]
+    return new MaterialApp(
+      title: "Шуточки с Чаком Норрисом",
+      theme: new ThemeData(
+        primarySwatch: Colors.deepPurple,
+      ),
+      home: new MyHomePage(),
     );
   }
 }
 
-class RandomWordsState extends State<RandomWords> {
-  final _suggestions = <WordPair>[];
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => new _MyHomePageState();
+}
 
-  final _biggerFont = const TextStyle(
-      fontSize: 20.0
-  );
+class _MyHomePageState extends State<MyHomePage> {
+  List _randomJokes = [];
+  RefreshController _refreshController;
 
-  Widget _buildSuggestions() {
-    return ListView.builder(
-        padding: const EdgeInsets.all(5.0),
-        itemBuilder: (context, i) {
-          // Add a one-pixel-high divider widget before each row in theListView.
-          if (i.isOdd) return Divider();
-
-          final index = i ~/ 2;
-          if (index >= _suggestions.length) {
-            _suggestions.addAll(generateWordPairs().take(5));
-          }
-          return _buildRow(_suggestions[index]);
-        });
+  void _onRefresh(bool up) {
+    fetchRandomChuckNorrisJokes().then((jokes) => setState(() {
+          _randomJokes.addAll(jokes);
+          _refreshController.sendBack(true, RefreshStatus.completed);
+    }));
   }
 
-  Widget _buildRow(WordPair pair) {
-    return ListTile(
-      title: Text(
-        pair.asCamelCase,
-        style: _biggerFont,
-      ),
-    );
+  @override
+  void initState() {
+    _refreshController = new RefreshController();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Шуточки от Чака Норриса'),
+    var listViewBuilder = new SmartRefresher(
+        controller: _refreshController,
+        enablePullDown: true,
+        onRefresh: _onRefresh,
+        child: new ListView.builder(
+          itemCount: _randomJokes?.length,
+          itemBuilder: (context, index) {
+            return _buildRow(_randomJokes[index]);
+          },
+        ));
+
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text("Шуточки с Чаком Норрисом"),
       ),
-      body: _buildSuggestions(),
+      body: listViewBuilder,
     );
   }
-}
 
-class RandomWords extends StatefulWidget {
-  @override
-  RandomWordsState createState() => new RandomWordsState();
+  Widget _buildRow(Joke joke) {
+    return new ListTile(
+        leading: Icon(Icons.code), title: new Text(joke.text));
+  }
 }
