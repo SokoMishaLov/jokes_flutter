@@ -24,20 +24,29 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List _randomJokes = [];
+  List _randomJokes;
   RefreshController _refreshController;
 
   void _onRefresh(bool up) {
     fetchRandomChuckNorrisJokes().then((jokes) => setState(() {
-          _randomJokes.addAll(jokes);
+          if (up) {
+            _randomJokes = [_randomJokes, jokes].expand((x) => x).toList();
+          } else {
+            _randomJokes = [jokes, _randomJokes].expand((x) => x).toList();
+          }
           _refreshController.sendBack(true, RefreshStatus.completed);
-    }));
+        })
+    );
   }
 
   @override
   void initState() {
     _refreshController = new RefreshController();
+    _randomJokes = [];
+
     super.initState();
+
+    _onRefresh(true);
   }
 
   @override
@@ -45,13 +54,15 @@ class _MyHomePageState extends State<MyHomePage> {
     var listViewBuilder = new SmartRefresher(
         controller: _refreshController,
         enablePullDown: true,
+        enablePullUp: true,
         onRefresh: _onRefresh,
         child: new ListView.builder(
           itemCount: _randomJokes?.length,
           itemBuilder: (context, index) {
             return _buildRow(_randomJokes[index]);
           },
-        ));
+        )
+    );
 
     return new Scaffold(
       appBar: new AppBar(
@@ -62,7 +73,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildRow(Joke joke) {
-    return new ListTile(
-        leading: Icon(Icons.code), title: new Text(joke.text));
+    return new ListTile(leading: Icon(Icons.code), title: new Text(joke.text));
   }
 }
