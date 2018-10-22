@@ -1,8 +1,2 @@
-# jokes_flutter
-
-Demo flutter project with  jokes
-
-## Getting Started
-
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
+# Chuck Norris Jokes
+Simple flutter project
