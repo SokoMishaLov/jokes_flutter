@@ -10,8 +10,12 @@ class Joke {
     } else {
       return new Joke(
           id: json['id'],
-          text: json['joke'].toString().replaceAll("&quot;", "\"")
-      );
+          text: json['joke'].toString().replaceAll("&quot;", "\""));
     }
+  }
+
+  @override
+  String toString() {
+    return 'Joke{id: $id, text: $text}';
   }
 }

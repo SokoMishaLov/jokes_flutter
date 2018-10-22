@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: "Шуточки с Чаком Норрисом",
+      supportedLocales: [Locale("en", ""), Locale("ru", "")],
       theme: new ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
@@ -30,11 +31,11 @@ class _MyHomePageState extends State<MyHomePage> {
   void _onRefresh(bool up) {
     fetchRandomChuckNorrisJokes().then((jokes) => setState(() {
           if (up) {
-            _randomJokes = [_randomJokes, jokes].expand((x) => x).toList();
-          } else {
             _randomJokes = [jokes, _randomJokes].expand((x) => x).toList();
+          } else {
+            _randomJokes = [_randomJokes, jokes].expand((x) => x).toList();
           }
-          _refreshController.sendBack(true, RefreshStatus.completed);
+          _refreshController.sendBack(up, RefreshStatus.completed);
         })
     );
   }
@@ -73,6 +74,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildRow(Joke joke) {
-    return new ListTile(leading: Icon(Icons.code), title: new Text(joke.text));
+    return new ListTile(
+        key: new Key(joke.id.toString()),
+        leading: Icon(Icons.code),
+        title: new Text(joke.text)
+    );
   }
 }
