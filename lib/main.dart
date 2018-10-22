@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jokes_flutter/api/jokes/jokes.dart';
-import 'package:jokes_flutter/model/Joke.dart';
-import "package:pull_to_refresh/pull_to_refresh.dart";
+import 'package:jokes_flutter/views/jokes-list.dart';
+import 'package:jokes_flutter/views/profile.dart';
 
 void main() => runApp(new MyApp());
 
@@ -25,56 +24,41 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List _randomJokes;
-  RefreshController _refreshController;
-  int _index;
-
-  void _onRefresh(bool up) {
-    fetchRandomChuckNorrisJokes().then((jokes) => setState(() {
-          if (up) {
-            _randomJokes = [jokes, _randomJokes].expand((x) => x).toList();
-          } else {
-            _randomJokes = [_randomJokes, jokes].expand((x) => x).toList();
-          }
-          _refreshController.sendBack(up, RefreshStatus.completed);
-        })
-    );
-  }
+  int _pageIndex;
 
   @override
   void initState() {
-    _refreshController = new RefreshController();
-    _randomJokes = [];
-    _index = 0;
-
+    _pageIndex = 0;
     super.initState();
-
-    _onRefresh(true);
   }
 
   @override
   Widget build(BuildContext context) {
-    var listViewBuilder = new SmartRefresher(
-        controller: _refreshController,
-        enablePullDown: true,
-        enablePullUp: true,
-        onRefresh: _onRefresh,
-        child: new ListView.builder(
-          itemCount: _randomJokes?.length,
-          itemBuilder: (context, index) {
-            return _buildRow(_randomJokes[index]);
-          },
-        )
-    );
-
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("Шуточки с Чаком Норрисом"),
       ),
-      body: listViewBuilder,
+      body: new Stack(
+        children: <Widget>[
+          new Offstage(
+            offstage: _pageIndex != 0,
+            child: new TickerMode(
+              enabled: _pageIndex == 0,
+              child: new JokesList(),
+            ),
+          ),
+          new Offstage(
+            offstage: _pageIndex != 1,
+            child: new TickerMode(
+              enabled: _pageIndex == 1,
+              child: new Profile(),
+            ),
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        onTap: (int index) { setState((){ _index = index; }); },
-        currentIndex: _index, // new
+        onTap: _setPageIndex,
+        currentIndex: _pageIndex, // new
         items: [
           new BottomNavigationBarItem(
             icon: Icon(Icons.list),
@@ -89,11 +73,5 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _buildRow(Joke joke) {
-    return new ListTile(
-        key: new Key(joke.id.toString()),
-        leading: Icon(Icons.code),
-        title: new Text(joke.text)
-    );
-  }
+  void _setPageIndex(int index) { setState((){ _pageIndex = index; }); }
 }
