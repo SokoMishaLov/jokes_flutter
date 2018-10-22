@@ -27,6 +27,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List _randomJokes;
   RefreshController _refreshController;
+  int _index;
 
   void _onRefresh(bool up) {
     fetchRandomChuckNorrisJokes().then((jokes) => setState(() {
@@ -44,6 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     _refreshController = new RefreshController();
     _randomJokes = [];
+    _index = 0;
 
     super.initState();
 
@@ -70,6 +72,20 @@ class _MyHomePageState extends State<MyHomePage> {
         title: new Text("Шуточки с Чаком Норрисом"),
       ),
       body: listViewBuilder,
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (int index) { setState((){ _index = index; }); },
+        currentIndex: _index, // new
+        items: [
+          new BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            title: Text('Шуточки!'),
+          ),
+          new BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              title: Text('Мой профиль')
+          )
+        ],
+      ),
     );
   }
 
