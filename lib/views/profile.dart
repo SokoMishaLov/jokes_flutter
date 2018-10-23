@@ -24,49 +24,58 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final avatar = Hero(
-      tag: 'hero',
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: CircleAvatar(
-          radius: 100.0,
-          backgroundColor: Colors.transparent,
-          backgroundImage: _profile?.avatar,
+
+    var children;
+    if (_profile != null) {
+      final avatar = Hero(
+            tag: 'hero',
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: CircleAvatar(
+                radius: 100.0,
+                backgroundColor: Colors.transparent,
+                backgroundImage: _profile?.avatar,
+              ),
+            ),
+          );
+
+      final fullName = Padding(
+        padding: EdgeInsets.all(4.0),
+        child: Text(
+          '${_profile?.firstName} ${_profile?.lastName}',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 40.0, color: _fontColor),
         ),
-      ),
-    );
+      );
 
-    final fullName = Padding(
-      padding: EdgeInsets.all(4.0),
-      child: Text(
-        '${_profile?.firstName} ${_profile?.lastName}',
-        style: TextStyle(fontSize: 40.0, color: _fontColor),
-      ),
-    );
+      final ages = Padding(
+        padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 4.0),
+        child: Text(
+          '${(DateTime.now().difference(_profile?.dateOfBirth).inDays / 365).floor()} лет',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 20.0, color: _fontColor),
+        ),
+      );
 
-    final ages = Padding(
-      padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 4.0),
-      child: Text(
-        '${(DateTime.now().difference(_profile?.dateOfBirth).inDays / 365).floor()} лет',
-        style: TextStyle(fontSize: 20.0, color: _fontColor),
-      ),
-    );
+      final phone = Padding(
+        padding: EdgeInsets.all(4.0),
+        child: Text(
+          '${_profile?.phone}',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 20.0, color: _fontColor),
+        ),
+      );
 
-    final email = Padding(
-      padding: EdgeInsets.all(4.0),
-      child: Text(
-        '${_profile?.email}',
-        style: TextStyle(fontSize: 20.0, color: _fontColor),
-      ),
-    );
 
-    final phone = Padding(
-      padding: EdgeInsets.all(4.0),
-      child: Text(
-        '${_profile?.phone}',
-        style: TextStyle(fontSize: 20.0, color: _fontColor),
-      ),
-    );
+      children = <Widget>[avatar, fullName, ages, phone];
+
+    } else {
+      var loader  = Center(
+          child: CircularProgressIndicator()
+      );
+
+      children = <Widget>[loader];
+    }
 
 
     return Scaffold(
@@ -77,7 +86,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
             gradient: LinearGradient(colors: _bgGradient),
           ),
           child: Column(
-            children: <Widget>[avatar, fullName, ages, email, phone],
+            children: children,
           ),
         )
     );

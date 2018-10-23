@@ -1,26 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:html_unescape/html_unescape.dart';
 
 class Joke {
-  final int id;
   final ImageProvider image;
   final String text;
 
-  Joke({this.id, this.image, this.text});
+
+  Joke({this.image, this.text});
 
   factory Joke.fromChuckNorrisJson(json) {
     if (json == null) {
       return null;
     } else {
       return new Joke(
-          id: json['id'],
           image: AssetImage('assets/chuck.jpg'),
-          text: json['joke'].toString().replaceAll("&quot;", "\"")
+          text: htmlEscape.convert(json['joke'])
       );
     }
   }
 
-  @override
-  String toString() {
-    return 'Joke{id: $id, text: $text}';
+  factory Joke.fromUmoriliJson(json) {
+    if (json == null) {
+      return null;
+    } else {
+      return new Joke(
+          image: AssetImage('assets/umorili.png'),
+          text: htmlEscape.convert(json['elementPureHtml'])
+      );
+    }
   }
 }
+
+final HtmlUnescape htmlEscape = new HtmlUnescape();

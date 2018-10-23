@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:jokes_flutter/api/jokes/jokes.dart';
 import 'package:jokes_flutter/model/Joke.dart';
@@ -34,12 +36,13 @@ class _JokesListWidgetState extends State<JokesListWidget> {
           itemBuilder: (context, index) {
             return _buildRow(_randomJokes[index]);
           },
-        ));
+        )
+    );
   }
 
   Widget _buildRow(Joke joke) {
     return new ListTile(
-        key: new Key(joke.id.toString()),
+        key: new Key(new Random().nextInt(1000).toString()),
         leading: new Container(
             width: 40.0,
             height: 40.0,
@@ -47,8 +50,7 @@ class _JokesListWidgetState extends State<JokesListWidget> {
                 shape: BoxShape.circle,
                 image: new DecorationImage(
                     fit: BoxFit.fill,
-                    image:
-                        joke.image
+                    image: joke.image
                 )
             )
         ),
@@ -64,5 +66,14 @@ class _JokesListWidgetState extends State<JokesListWidget> {
           }
           _refreshController.sendBack(up, RefreshStatus.completed);
         }));
+
+    fetchRandomUmoriliJokes().then((jokes) => setState(() {
+      if (up) {
+        _randomJokes = [jokes, _randomJokes].expand((x) => x).toList();
+      } else {
+        _randomJokes = [_randomJokes, jokes].expand((x) => x).toList();
+      }
+      _refreshController.sendBack(up, RefreshStatus.completed);
+    }));
   }
 }
