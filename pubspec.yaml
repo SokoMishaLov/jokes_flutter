@@ -21,10 +21,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-
 flutter:
   uses-material-design: true
   assets:
   - assets/chuck.jpg
-  - assets/umorili.png
-  - assets/dad_joke.png
+  - assets/smile.png

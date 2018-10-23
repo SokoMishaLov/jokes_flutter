@@ -19,23 +19,12 @@ class Joke {
     }
   }
 
-  factory Joke.fromUmoriliJson(json) {
-    if (json == null) {
-      return null;
-    } else {
-      return new Joke(
-          image: AssetImage('assets/umorili.png'),
-          text: htmlEscape.convert(json['elementPureHtml'])
-      );
-    }
-  }
-
   factory Joke.fromDadJokeJson(json) {
     if (json == null) {
       return null;
     } else {
       return new Joke(
-          image: AssetImage('assets/dad_joke.png'),
+          image: AssetImage('assets/smile.png'),
           text: htmlEscape.convert(json['joke'])
       );
     }

@@ -48,6 +48,7 @@ class _JokesListWidgetState extends State<JokesListWidget> {
 
   Widget _buildRow(Joke joke) {
     Key key = new Key(new Random().nextInt(1000).toString());
+
     return new ListTile(
         key: key,
         leading: new Container(
@@ -66,7 +67,6 @@ class _JokesListWidgetState extends State<JokesListWidget> {
   }
 
   void _onRefresh(bool up) {
-
     fetchJokesFromAllSources().then((jokes) => setState(() {
       if (up) {
         _randomJokes = [jokes, _randomJokes].expand((x) => x).toList();
