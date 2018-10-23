@@ -7,13 +7,15 @@ import 'package:jokes_flutter/api/settings.dart';
 import 'package:jokes_flutter/model/Joke.dart';
 
 const int FETCH_AMOUNT = 5;
+const int DAD_JOKES_TOTAL_AMOUNT = 500;
 
 Future<List> fetchJokesFromAllSources() async {
 
   List<List> list = await Future
       .wait([
         fetchRandomChuckNorrisJokes(),
-        fetchRandomUmoriliJokes()
+        fetchRandomUmoriliJokes(),
+        fetchDadJokes()
       ]);
 
   List result = [];
@@ -42,6 +44,18 @@ Future<List> fetchRandomUmoriliJokes() async {
     return json
         .decode(response.body)
         .map((o) => Joke.fromUmoriliJson(o))
+        .toList();
+  } else {
+    throw Exception('Failed to load jokes :(');
+  }
+}
+
+Future<List> fetchDadJokes() async {
+  final response = await http.get('${API.DAD_JOKE_BASE_URL}/search?page=7&limit=$FETCH_AMOUNT', headers: {"Accept": "application/json"});
+  if (response.statusCode == 200) {
+    return json
+        .decode(response.body)['results']
+        .map((o) => Joke.fromDadJokeJson(o))
         .toList();
   } else {
     throw Exception('Failed to load jokes :(');

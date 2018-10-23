@@ -29,6 +29,18 @@ class Joke {
       );
     }
   }
+
+  factory Joke.fromDadJokeJson(json) {
+    if (json == null) {
+      return null;
+    } else {
+      return new Joke(
+          image: AssetImage('assets/dad_joke.png'),
+          text: htmlEscape.convert(json['joke'])
+      );
+    }
+  }
+
 }
 
 final HtmlUnescape htmlEscape = new HtmlUnescape();
