@@ -27,13 +27,13 @@ Future<List> fetchJokesFromAllSources() async {
 
 Future<List> fetchRandomChuckNorrisJokes() async {
   final response = await http.get('${API.CHUCK_NORRIS_DATABASE_BASE_URL}/random/$FETCH_AMOUNT');
-  if (response.statusCode == 200) {
+  if (response?.statusCode == 200) {
     return json
         .decode(response.body)['value']
         .map((o) => Joke.fromChuckNorrisJson(o))
         .toList();
   } else {
-    throw Exception('Failed to load jokes :(');
+    return [];
   }
 }
 
@@ -41,12 +41,12 @@ Future<List> fetchDadJokes() async {
   int page = new Random(DateTime.now().millisecondsSinceEpoch).nextInt((DAD_JOKES_TOTAL_AMOUNT / FETCH_AMOUNT).floor());
 
   final response = await http.get('${API.DAD_JOKE_BASE_URL}/search?page=$page&limit=$FETCH_AMOUNT', headers: {"Accept": "application/json"});
-  if (response.statusCode == 200) {
+  if (response?.statusCode == 200) {
     return json
         .decode(response.body)['results']
         .map((o) => Joke.fromDadJokeJson(o))
         .toList();
   } else {
-    throw Exception('Failed to load jokes :(');
+    return [];
   }
 }
