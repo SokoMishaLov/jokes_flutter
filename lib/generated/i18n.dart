@@ -21,7 +21,7 @@ class S implements WidgetsLocalizations {
   @override
   TextDirection get textDirection => TextDirection.ltr;
 
-  String get mainTitle => "Chuck Norris Jokes";
+  String get mainTitle => "Jokes";
 }
 
 class ru extends S {
@@ -31,7 +31,7 @@ class ru extends S {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
-  String get mainTitle => "Шуточки от Чака Норриса";
+  String get mainTitle => "Шуточки";
 }
 
 class en extends S {

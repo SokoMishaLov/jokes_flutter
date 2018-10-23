@@ -15,6 +15,7 @@ dependencies:
   pull_to_refresh: ^1.1.5
   strings: 0.1.0
   html_unescape: 1.0.1+2
+  flutter_html_widget: 0.0.2
 
 dev_dependencies:
   flutter_test:
