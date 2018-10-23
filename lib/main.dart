@@ -44,21 +44,22 @@ class _MyHomePageState extends State<MyHomePage> {
             offstage: _pageIndex != 0,
             child: new TickerMode(
               enabled: _pageIndex == 0,
-              child: new JokesList(),
+              child: new JokesListWidget(),
             ),
           ),
           new Offstage(
             offstage: _pageIndex != 1,
             child: new TickerMode(
               enabled: _pageIndex == 1,
-              child: new Profile(),
+              child: new ProfileWidget(),
             ),
           ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: _setPageIndex,
-        currentIndex: _pageIndex, // new
+        currentIndex: _pageIndex,
+        iconSize: 20.0,
         items: [
           new BottomNavigationBarItem(
             icon: Icon(Icons.list),
@@ -66,12 +67,15 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           new BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              title: Text('Мой профиль')
-          )
+              title: Text('Мой профиль'))
         ],
       ),
     );
   }
 
-  void _setPageIndex(int index) { setState((){ _pageIndex = index; }); }
+  void _setPageIndex(int index) {
+    setState(() {
+      _pageIndex = index;
+    });
+  }
 }

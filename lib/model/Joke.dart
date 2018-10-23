@@ -1,16 +1,21 @@
+import 'package:flutter/material.dart';
+
 class Joke {
   final int id;
+  final ImageProvider image;
   final String text;
 
-  Joke({this.id, this.text});
+  Joke({this.id, this.image, this.text});
 
-  factory Joke.fromJson(json) {
+  factory Joke.fromChuckNorrisJson(json) {
     if (json == null) {
       return null;
     } else {
       return new Joke(
           id: json['id'],
-          text: json['joke'].toString().replaceAll("&quot;", "\""));
+          image: AssetImage('assets/chuck.jpg'),
+          text: json['joke'].toString().replaceAll("&quot;", "\"")
+      );
     }
   }
 
