@@ -10,8 +10,14 @@ class Profile {
   final DateTime dateOfBirth;
   final ImageProvider avatar;
 
-
-  Profile({this.firstName, this.lastName, this.gender, this.phone, this.email, this.dateOfBirth, this.avatar});
+  Profile(
+      {this.firstName,
+      this.lastName,
+      this.gender,
+      this.phone,
+      this.email,
+      this.dateOfBirth,
+      this.avatar});
 
   factory Profile.fromJson(json) {
     if (json == null) {
@@ -24,7 +30,7 @@ class Profile {
         phone: json['phone'],
         email: json['email'],
         dateOfBirth: DateTime.parse(json['dob']['date']),
-        avatar: NetworkImage(json['picture']['large'])
+        avatar: NetworkImage(json['picture']['large']),
       );
     }
   }

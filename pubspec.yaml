@@ -10,10 +10,11 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^0.1.2
-  english_words: ^3.1.0
-  http: 0.11.3+17
-  pull_to_refresh: ^1.1.5
+  english_words: ^3.1.5
+  http: ^0.12.0+2
+  pull_to_refresh: ^1.4.3
   strings: 0.1.0
+  quiver: ^2.0.3
   html_unescape: 1.0.1+2
   flutter_html_widget: 0.0.2
 

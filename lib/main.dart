@@ -9,7 +9,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: "Шуточки",
-      supportedLocales: [Locale("en", ""), Locale("ru", "")],
       theme: new ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
@@ -66,8 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
             title: Text('Лента'),
           ),
           new BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              title: Text('Мой профиль'))
+              icon: Icon(Icons.person), title: Text('Мой профиль'))
         ],
       ),
     );

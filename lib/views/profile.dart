@@ -24,20 +24,19 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     var children;
     if (_profile != null) {
       final avatar = Hero(
-            tag: 'hero',
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: CircleAvatar(
-                radius: 100.0,
-                backgroundColor: Colors.transparent,
-                backgroundImage: _profile?.avatar,
-              ),
-            ),
-          );
+        tag: 'hero',
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: CircleAvatar(
+            radius: 100.0,
+            backgroundColor: Colors.transparent,
+            backgroundImage: _profile?.avatar,
+          ),
+        ),
+      );
 
       final fullName = Padding(
         padding: EdgeInsets.all(4.0),
@@ -66,35 +65,29 @@ class _ProfileWidgetState extends State<ProfileWidget> {
         ),
       );
 
-
       children = <Widget>[avatar, fullName, ages, phone];
-
     } else {
-      var loader  = Center(
-          child: CircularProgressIndicator()
-      );
+      var loader = Center(child: CircularProgressIndicator());
 
       children = <Widget>[loader];
     }
 
-
     return Scaffold(
         body: Container(
-          width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.all(40.0),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(colors: _bgGradient),
-          ),
-          child: Column(
-            children: children,
-          ),
-        )
-    );
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.all(40.0),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(colors: _bgGradient),
+      ),
+      child: Column(
+        children: children,
+      ),
+    ));
   }
 
   _loadProfile() {
     fetchProfile().then((profile) => setState(() {
-      _profile = profile;
-    }));
+          _profile = profile;
+        }));
   }
 }
