@@ -8,7 +8,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: "Шуточки",
+      title: "Jokes",
       theme: new ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
@@ -35,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("Шуточки"),
+        title: new Text("Jokes"),
       ),
       body: new Stack(
         children: <Widget>[

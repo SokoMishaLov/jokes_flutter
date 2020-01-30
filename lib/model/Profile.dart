@@ -10,28 +10,27 @@ class Profile {
   final DateTime dateOfBirth;
   final ImageProvider avatar;
 
-  Profile(
-      {this.firstName,
-      this.lastName,
-      this.gender,
-      this.phone,
-      this.email,
-      this.dateOfBirth,
-      this.avatar});
+  Profile({
+    this.firstName,
+    this.lastName,
+    this.gender,
+    this.phone,
+    this.email,
+    this.dateOfBirth,
+    this.avatar,
+  });
 
   factory Profile.fromJson(json) {
-    if (json == null) {
-      return null;
-    } else {
-      return new Profile(
-        lastName: capitalize(json['name']['last']),
-        firstName: capitalize(json['name']['first']),
-        gender: json['gender'],
-        phone: json['phone'],
-        email: json['email'],
-        dateOfBirth: DateTime.parse(json['dob']['date']),
-        avatar: NetworkImage(json['picture']['large']),
-      );
-    }
+    return json == null
+        ? null
+        : Profile(
+            lastName: capitalize(json['name']['last']),
+            firstName: capitalize(json['name']['first']),
+            gender: json['gender'],
+            phone: json['phone'],
+            email: json['email'],
+            dateOfBirth: DateTime.parse(json['dob']['date']),
+            avatar: NetworkImage(json['picture']['large']),
+          );
   }
 }

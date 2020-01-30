@@ -70,12 +70,10 @@ class _JokesListWidgetState extends State<JokesListWidget> {
     );
   }
 
-  void _onRefresh() {
-    fetchJokesFromAllSources().then((jokes) {
-      setState(() {
-        _randomJokes = [jokes, _randomJokes].expand((x) => x).toList();
-        _refreshController.refreshCompleted();
-      });
+  void _onRefresh() async {
+    var newJokes = await fetchJokesFromAllSources();
+    setState(() {
+      _randomJokes = [newJokes, _randomJokes].expand((x) => x).toList();
     });
   }
 

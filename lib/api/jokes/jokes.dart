@@ -10,7 +10,7 @@ import '../http.dart';
 const int FETCH_AMOUNT = 5;
 const int DAD_JOKES_TOTAL_AMOUNT = 500;
 
-Future<List> fetchJokesFromAllSources() async {
+Future<List<Joke>> fetchJokesFromAllSources() async {
   List<List> list = await Future.wait([
     fetchRandomChuckNorrisJokes(),
     fetchDadJokes(),
@@ -24,7 +24,7 @@ Future<List> fetchJokesFromAllSources() async {
   return result;
 }
 
-Future<List> fetchRandomChuckNorrisJokes() async {
+Future<List<Joke>> fetchRandomChuckNorrisJokes() async {
   final response =
       await http.get('$CHUCK_NORRIS_DATABASE_BASE_URL/random/$FETCH_AMOUNT');
   if (response?.statusCode == 200) {
@@ -37,7 +37,7 @@ Future<List> fetchRandomChuckNorrisJokes() async {
   }
 }
 
-Future<List> fetchDadJokes() async {
+Future<List<Joke>> fetchDadJokes() async {
   int page = new Random(DateTime.now().millisecondsSinceEpoch)
       .nextInt((DAD_JOKES_TOTAL_AMOUNT / FETCH_AMOUNT).floor());
 
